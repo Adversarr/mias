@@ -1,0 +1,51 @@
+[
+{
+  "directory": "C:\\Users\\JerryYang\\Repo\\mias",
+  "arguments": ["C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.34.31933\\bin\\HostX64\\x64\\cl.exe", "/c", "/nologo", "/EHsc", "/IC:\\Users\\JerryYang\\AppData\\Local\\.xmake\\packages\\c\\coost\\v3.0.0\\d82cfa49bfc5444e810bd4b325eb1724\\include", "/Fobuild\\.objs\\mias\\windows\\x64\\release\\src\\main.cpp.obj", "src\\main.cpp"],
+  "file": "src\\main.cpp"
+},
+{
+  "directory": "C:\\Users\\JerryYang\\Repo\\mias",
+  "arguments": ["C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.34.31933\\bin\\HostX64\\x64\\cl.exe", "/c", "/nologo", "/std:c++17", "/Ikrill\\krill\\include", "/DSPDLOG_FMT_EXTERNAL", "/DFMT_HEADER_ONLY=1", "/EHsc", "/IC:\\Users\\JerryYang\\AppData\\Local\\.xmake\\packages\\s\\spdlog\\v1.11.0\\e8250a4b3b3c474faa2cb5774d708699\\include", "/IC:\\Users\\JerryYang\\AppData\\Local\\.xmake\\packages\\f\\fmt\\9.1.0\\6f72c6d51ae74e49b5ab9f4e420c2767\\include", "/IC:\\Users\\JerryYang\\AppData\\Local\\.xmake\\packages\\m\\magic_enum\\v0.8.1\\118bbee15d324538b05fabee47c188dc\\include", "/Fobuild\\.objs\\krill\\windows\\x64\\release\\krill\\krill\\src\\attrdict.cpp.obj", "krill\\krill\\src\\attrdict.cpp"],
+  "file": "krill\\krill\\src\\attrdict.cpp"
+},
+{
+  "directory": "C:\\Users\\JerryYang\\Repo\\mias",
+  "arguments": ["C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.34.31933\\bin\\HostX64\\x64\\cl.exe", "/c", "/nologo", "/std:c++17", "/Ikrill\\krill\\include", "/DSPDLOG_FMT_EXTERNAL", "/DFMT_HEADER_ONLY=1", "/EHsc", "/IC:\\Users\\JerryYang\\AppData\\Local\\.xmake\\packages\\s\\spdlog\\v1.11.0\\e8250a4b3b3c474faa2cb5774d708699\\include", "/IC:\\Users\\JerryYang\\AppData\\Local\\.xmake\\packages\\f\\fmt\\9.1.0\\6f72c6d51ae74e49b5ab9f4e420c2767\\include", "/IC:\\Users\\JerryYang\\AppData\\Local\\.xmake\\packages\\m\\magic_enum\\v0.8.1\\118bbee15d324538b05fabee47c188dc\\include", "/Fobuild\\.objs\\krill\\windows\\x64\\release\\krill\\krill\\src\\automata.cpp.obj", "krill\\krill\\src\\automata.cpp"],
+  "file": "krill\\krill\\src\\automata.cpp"
+},
+{
+  "directory": "C:\\Users\\JerryYang\\Repo\\mias",
+  "arguments": ["C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.34.31933\\bin\\HostX64\\x64\\cl.exe", "/c", "/nologo", "/std:c++17", "/Ikrill\\krill\\include", "/DSPDLOG_FMT_EXTERNAL", "/DFMT_HEADER_ONLY=1", "/EHsc", "/IC:\\Users\\JerryYang\\AppData\\Local\\.xmake\\packages\\s\\spdlog\\v1.11.0\\e8250a4b3b3c474faa2cb5774d708699\\include", "/IC:\\Users\\JerryYang\\AppData\\Local\\.xmake\\packages\\f\\fmt\\9.1.0\\6f72c6d51ae74e49b5ab9f4e420c2767\\include", "/IC:\\Users\\JerryYang\\AppData\\Local\\.xmake\\packages\\m\\magic_enum\\v0.8.1\\118bbee15d324538b05fabee47c188dc\\include", "/Fobuild\\.objs\\krill\\windows\\x64\\release\\krill\\krill\\src\\codegen.cpp.obj", "krill\\krill\\src\\codegen.cpp"],
+  "file": "krill\\krill\\src\\codegen.cpp"
+},
+{
+  "directory": "C:\\Users\\JerryYang\\Repo\\mias",
+  "arguments": ["C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.34.31933\\bin\\HostX64\\x64\\cl.exe", "/c", "/nologo", "/std:c++17", "/Ikrill\\krill\\include", "/DSPDLOG_FMT_EXTERNAL", "/DFMT_HEADER_ONLY=1", "/EHsc", "/IC:\\Users\\JerryYang\\AppData\\Local\\.xmake\\packages\\s\\spdlog\\v1.11.0\\e8250a4b3b3c474faa2cb5774d708699\\include", "/IC:\\Users\\JerryYang\\AppData\\Local\\.xmake\\packages\\f\\fmt\\9.1.0\\6f72c6d51ae74e49b5ab9f4e420c2767\\include", "/IC:\\Users\\JerryYang\\AppData\\Local\\.xmake\\packages\\m\\magic_enum\\v0.8.1\\118bbee15d324538b05fabee47c188dc\\include", "/Fobuild\\.objs\\krill\\windows\\x64\\release\\krill\\krill\\src\\defs.cpp.obj", "krill\\krill\\src\\defs.cpp"],
+  "file": "krill\\krill\\src\\defs.cpp"
+},
+{
+  "directory": "C:\\Users\\JerryYang\\Repo\\mias",
+  "arguments": ["C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.34.31933\\bin\\HostX64\\x64\\cl.exe", "/c", "/nologo", "/std:c++17", "/Ikrill\\krill\\include", "/DSPDLOG_FMT_EXTERNAL", "/DFMT_HEADER_ONLY=1", "/EHsc", "/IC:\\Users\\JerryYang\\AppData\\Local\\.xmake\\packages\\s\\spdlog\\v1.11.0\\e8250a4b3b3c474faa2cb5774d708699\\include", "/IC:\\Users\\JerryYang\\AppData\\Local\\.xmake\\packages\\f\\fmt\\9.1.0\\6f72c6d51ae74e49b5ab9f4e420c2767\\include", "/IC:\\Users\\JerryYang\\AppData\\Local\\.xmake\\packages\\m\\magic_enum\\v0.8.1\\118bbee15d324538b05fabee47c188dc\\include", "/Fobuild\\.objs\\krill\\windows\\x64\\release\\krill\\krill\\src\\grammar.cpp.obj", "krill\\krill\\src\\grammar.cpp"],
+  "file": "krill\\krill\\src\\grammar.cpp"
+},
+{
+  "directory": "C:\\Users\\JerryYang\\Repo\\mias",
+  "arguments": ["C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.34.31933\\bin\\HostX64\\x64\\cl.exe", "/c", "/nologo", "/std:c++17", "/Ikrill\\krill\\include", "/DSPDLOG_FMT_EXTERNAL", "/DFMT_HEADER_ONLY=1", "/EHsc", "/IC:\\Users\\JerryYang\\AppData\\Local\\.xmake\\packages\\s\\spdlog\\v1.11.0\\e8250a4b3b3c474faa2cb5774d708699\\include", "/IC:\\Users\\JerryYang\\AppData\\Local\\.xmake\\packages\\f\\fmt\\9.1.0\\6f72c6d51ae74e49b5ab9f4e420c2767\\include", "/IC:\\Users\\JerryYang\\AppData\\Local\\.xmake\\packages\\m\\magic_enum\\v0.8.1\\118bbee15d324538b05fabee47c188dc\\include", "/Fobuild\\.objs\\krill\\windows\\x64\\release\\krill\\krill\\src\\lexical.cpp.obj", "krill\\krill\\src\\lexical.cpp"],
+  "file": "krill\\krill\\src\\lexical.cpp"
+},
+{
+  "directory": "C:\\Users\\JerryYang\\Repo\\mias",
+  "arguments": ["C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.34.31933\\bin\\HostX64\\x64\\cl.exe", "/c", "/nologo", "/std:c++17", "/Ikrill\\krill\\include", "/DSPDLOG_FMT_EXTERNAL", "/DFMT_HEADER_ONLY=1", "/EHsc", "/IC:\\Users\\JerryYang\\AppData\\Local\\.xmake\\packages\\s\\spdlog\\v1.11.0\\e8250a4b3b3c474faa2cb5774d708699\\include", "/IC:\\Users\\JerryYang\\AppData\\Local\\.xmake\\packages\\f\\fmt\\9.1.0\\6f72c6d51ae74e49b5ab9f4e420c2767\\include", "/IC:\\Users\\JerryYang\\AppData\\Local\\.xmake\\packages\\m\\magic_enum\\v0.8.1\\118bbee15d324538b05fabee47c188dc\\include", "/Fobuild\\.objs\\krill\\windows\\x64\\release\\krill\\krill\\src\\minic.cpp.obj", "krill\\krill\\src\\minic.cpp"],
+  "file": "krill\\krill\\src\\minic.cpp"
+},
+{
+  "directory": "C:\\Users\\JerryYang\\Repo\\mias",
+  "arguments": ["C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.34.31933\\bin\\HostX64\\x64\\cl.exe", "/c", "/nologo", "/std:c++17", "/Ikrill\\krill\\include", "/DSPDLOG_FMT_EXTERNAL", "/DFMT_HEADER_ONLY=1", "/EHsc", "/IC:\\Users\\JerryYang\\AppData\\Local\\.xmake\\packages\\s\\spdlog\\v1.11.0\\e8250a4b3b3c474faa2cb5774d708699\\include", "/IC:\\Users\\JerryYang\\AppData\\Local\\.xmake\\packages\\f\\fmt\\9.1.0\\6f72c6d51ae74e49b5ab9f4e420c2767\\include", "/IC:\\Users\\JerryYang\\AppData\\Local\\.xmake\\packages\\m\\magic_enum\\v0.8.1\\118bbee15d324538b05fabee47c188dc\\include", "/Fobuild\\.objs\\krill\\windows\\x64\\release\\krill\\krill\\src\\regex.cpp.obj", "krill\\krill\\src\\regex.cpp"],
+  "file": "krill\\krill\\src\\regex.cpp"
+},
+{
+  "directory": "C:\\Users\\JerryYang\\Repo\\mias",
+  "arguments": ["C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.34.31933\\bin\\HostX64\\x64\\cl.exe", "/c", "/nologo", "/std:c++17", "/Ikrill\\krill\\include", "/DSPDLOG_FMT_EXTERNAL", "/DFMT_HEADER_ONLY=1", "/EHsc", "/IC:\\Users\\JerryYang\\AppData\\Local\\.xmake\\packages\\s\\spdlog\\v1.11.0\\e8250a4b3b3c474faa2cb5774d708699\\include", "/IC:\\Users\\JerryYang\\AppData\\Local\\.xmake\\packages\\f\\fmt\\9.1.0\\6f72c6d51ae74e49b5ab9f4e420c2767\\include", "/IC:\\Users\\JerryYang\\AppData\\Local\\.xmake\\packages\\m\\magic_enum\\v0.8.1\\118bbee15d324538b05fabee47c188dc\\include", "/Fobuild\\.objs\\krill\\windows\\x64\\release\\krill\\krill\\src\\syntax.cpp.obj", "krill\\krill\\src\\syntax.cpp"],
+  "file": "krill\\krill\\src\\syntax.cpp"
+}]
