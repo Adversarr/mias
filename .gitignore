@@ -1,3 +1,4 @@
 .cache
 .xmake
+compile_commands.json
 build
