@@ -25,6 +25,7 @@ private:
 
   std::vector<std::string> input_str_;
   std::vector<std::string> instr_str_;
+  std::vector<uint32_t> instr_binary_;
   size_t index_{0};
   std::map<std::string, std::size_t> flags_;
   DmemDesc dmem_desc_;

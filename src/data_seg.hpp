@@ -1,8 +1,8 @@
-
+#pragma once
 #include "table.hpp"
 #include <map>
 #include <spdlog/spdlog.h>
-#include <vector>
+
 namespace mias {
 
 class DataSegParser {

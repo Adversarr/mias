@@ -251,9 +251,6 @@ void DataSegParser::RunDataDefinitionCommand() {
       throw_error();
     }
     auto segment = interprete_integers(cmd.substr(remaining_begin));
-    for (auto ui : segment) {
-      spdlog::info("Integers: ui = {}", ui);
-    }
     if (dtype == ".word") {
       for (auto ui : segment) {
         dmem_.push_back(static_cast<uint8_t>(ui >> 24));
@@ -309,7 +306,7 @@ void DataSegParser::RunAlignCommand() {
 
 void DataSegParser::RunAlign(int n) {
   spdlog::info("[D] Align next variable, n * 2 = {}", n);
-  align_n_ = n;
+  next_align_n_ = n;
   is_next_align_ = true;
 }
 

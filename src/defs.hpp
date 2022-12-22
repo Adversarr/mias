@@ -161,8 +161,5 @@ struct InstrDesc {
   static InstrDesc Nop();
 };
 
-uint32_t to_binary(InstrDesc desc);
-
-InstrDesc from_string(std::string str);
 
 } // namespace mias
