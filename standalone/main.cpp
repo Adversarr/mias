@@ -1,5 +1,8 @@
 #include "data_seg.hpp"
+#include "prog_seg.hpp"
+#include "utils.hpp"
 #include <cxxopts.hpp>
+#include <fstream>
 #include <iomanip>
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <spdlog/spdlog.h>
@@ -9,11 +12,151 @@
 //  1. no space front.
 //  2. no comment messages
 //  3. seperate : with definition.
-//
+
+struct ASMDesc {
+  std::vector<std::string> data;
+  std::vector<std::string> text;
+} desc;
+
+void RunInput(std::istream &input) {
+  std::vector<std::string> input_str;
+  while (!input.eof()) {
+    std::string line;
+    std::getline(input, line);
+    std::string clear;
+    auto beg = mias::find_first_nws(line);
+    if (beg != line.length()) {
+      // Not Empty.
+      line = line.substr(beg);
+      bool is_in_string = false;
+      for (auto c : line) {
+        if (c == '"') {
+          is_in_string = !is_in_string;
+        }
+        if (c == '#') {
+          if (!is_in_string) {
+            break;
+          }
+        }
+        clear.push_back(c);
+      }
+      if (is_in_string) {
+        spdlog::error("Unterminated String {}", line);
+        throw std::runtime_error("Preprocessing Error");
+      }
+      // remove rebundant spaces:
+      int i = clear.length() - 1;
+      while (i > 0 && std::isspace(clear[i])) {
+        i -= 1;
+      }
+      clear = clear.substr(0, i + 1);
+      if (!clear.empty()) {
+        spdlog::info("Got '{}'", clear);
+        input_str.push_back(clear);
+      }
+    }
+  }
+  bool is_data_seg = false;
+  bool is_text_seg = false;
+  for (auto line : input_str) {
+    if (mias::strtolower(line) == ".data") {
+      is_data_seg = true;
+      is_text_seg = false;
+    } else if (mias::strtolower(line) == ".text") {
+      is_text_seg = true;
+      is_data_seg = false;
+    } else if (is_data_seg) {
+      desc.data.push_back(line);
+    } else if (is_text_seg) {
+      desc.text.push_back(line);
+    } else {
+      spdlog::warn("Instr Without Segment Flag: {}, ignored.", line);
+    }
+  }
+}
+
+void GenerateCOE(std::string path, const std::vector<uint32_t> &data,
+                 uint32_t kbs) {
+  auto n = kbs * 256;
+  std::ofstream out(path);
+  if (!out.is_open()) {
+    spdlog::error("Cannot Open File {}", path);
+    throw std::runtime_error("Cannot Open File Error");
+  }
+
+  out << "memory_initialization_radix = 16;" << std::endl;
+  out << "memory_initialization_vector =" << std::endl;
+  for (auto value : data) {
+    out << std::setw(8) << std::setfill('0') << std::hex << value;
+    n -= 1;
+    if (n == 0) {
+      out << ";" << std::endl;
+      break;
+    } else {
+      out << "," << std::endl;
+    }
+  }
+  while (n > 1) {
+    out << "00000000," << std::endl;
+    n -= 1;
+  }
+
+  if (n > 0) {
+    out << "00000000;" << std::endl;
+  }
+  out.close();
+}
+
+void GenerateOutput(std::ostream &os, uint32_t kbs) {}
 
 int main(int argc, char *argv[]) {
+  cxxopts::Options opts("mias", "MInisys ASsembler");
+  opts.add_options()("i", "Input Asm File, 0 for stdin.",
+                     cxxopts::value<std::string>()->default_value("0"));
+  opts.add_options()("o", "Output Asm File, 1 for stdout.",
+                     cxxopts::value<std::string>()->default_value("1"));
+  opts.add_options()("m", "memory size, in KB",
+                     cxxopts::value<uint32_t>()->default_value("0"));
+  opts.add_options()("c,coe", "generate coe output as well.");
+  auto option = opts.parse(argc, argv);
   auto default_logger = spdlog::stderr_color_st("el");
   spdlog::set_default_logger(default_logger);
   spdlog::set_level(spdlog::level::debug);
+  if (option["i"].as<std::string>() == "0") {
+    RunInput(std::cin);
+  } else {
+    auto file = std::ifstream(option["i"].as<std::string>());
+    if (!file.is_open()) {
+      spdlog::error("Cannot open file {}", option["i"].as<std::string>());
+      throw std::runtime_error("I/O Error");
+    }
+    RunInput(file);
+  }
+
+  mias::DataSegParser dp;
+  dp.Parse(desc.data);
+  auto dseg = dp.Describe();
+  mias::ProgSegParser pp;
+  pp.SetDmemDesc(dseg);
+  pp.Parse(desc.text);
+  auto pseg = pp.Describe();
+  if (option["coe"].as<bool>()) {
+    // Generate COE
+    auto kbs = option["m"].as<uint32_t>();
+    GenerateCOE("prgmem.coe", pseg.binary_instrs, kbs);
+    GenerateCOE("dmem.coe", dseg.dmem_value, kbs);
+  }
+
+  int i = 0;
+  for (uint32_t instr : pseg.binary_instrs) {
+    spdlog::info("Pmem[{:#010x}] = {:#010x}", i, instr);
+    i += 4;
+  }
+
+  i = 0;
+  for (uint32_t instr : dseg.dmem_value) {
+    spdlog::info("Dmem[{:#010x}] = {:#010x}", i, instr);
+    i += 4;
+  }
   return 0;
 }

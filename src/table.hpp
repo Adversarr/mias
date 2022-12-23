@@ -7,7 +7,7 @@ namespace mias {
 
 struct DmemDesc {
   std::map<std::string, std::size_t> variables;
-  std::vector<uint8_t> dmem_value;
+  std::vector<uint32_t> dmem_value;
 };
 
 struct PmemDesc {

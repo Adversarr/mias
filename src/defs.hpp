@@ -143,12 +143,13 @@ struct InstrDesc {
   static InstrDesc Lh(uint32_t rs, uint32_t rt, uint32_t offset);
   static InstrDesc Lhu(uint32_t rs, uint32_t rt, uint32_t offset);
   static InstrDesc Sb(uint32_t rs, uint32_t rt, uint32_t offset);
-  static InstrDesc Sbh(uint32_t rs, uint32_t rt, uint32_t offset);
+  static InstrDesc Sh(uint32_t rs, uint32_t rt, uint32_t offset);
   static InstrDesc Lw(uint32_t rs, uint32_t rt, uint32_t offset);
   static InstrDesc Sw(uint32_t rs, uint32_t rt, uint32_t offset);
   static InstrDesc Beq(uint32_t rs, uint32_t rt, uint32_t offset);
   static InstrDesc Bne(uint32_t rs, uint32_t rt, uint32_t offset);
   static InstrDesc Bgez(uint32_t rs, uint32_t rt, uint32_t offset);
+  static InstrDesc Bgtz(uint32_t rs, uint32_t rt, uint32_t offset);
   static InstrDesc Blez(uint32_t rs, uint32_t rt, uint32_t offset);
   static InstrDesc Bltz(uint32_t rs, uint32_t rt, uint32_t offset);
   static InstrDesc Bgezal(uint32_t rs, uint32_t rt, uint32_t offset);

@@ -12,23 +12,6 @@ static void throw_error() {
   throw std::runtime_error("Data Segment Runtime Error");
 }
 
-uint32_t atoi(const std::string &s) {
-  bool hex = false;
-  if (s.length() > 2) {
-    if (s.substr(0, 2) == "0x") {
-      hex = true;
-    }
-  }
-  uint32_t retval;
-  if (hex) {
-    std::istringstream iss(s);
-    iss >> std::setbase(16) >> retval;
-  } else {
-    retval = std::atoi(s.c_str());
-  }
-  return retval;
-}
-
 static std::pair<std::vector<char>, int> get_string(std::string str) {
   std::vector<char> retval;
   int i = 1;
@@ -357,10 +340,23 @@ DataSegParser::CommandType DataSegParser::GetNextCommandType() const {
   return CommandType::kError;
 }
 
+inline static uint32_t compose(uint8_t a, uint8_t b, uint8_t c, uint8_t d) {
+  uint32_t v;
+  uint8_t *p = reinterpret_cast<uint8_t *>(&v);
+  p[3] = a;
+  p[2] = b;
+  p[1] = c;
+  p[0] = d;
+  return v;
+}
+
 DmemDesc DataSegParser::Describe() const {
   DmemDesc desc;
   desc.variables = addr_name_;
-  desc.dmem_value = dmem_;
+  for (int i = 0; i * 4 < dmem_.size(); ++i) {
+    desc.dmem_value.push_back(compose(dmem_[i * 4], dmem_[i * 4 + 1],
+                                      dmem_[i * 4 + 2], dmem_[i * 4 + 3]));
+  }
   return desc;
 }
 
