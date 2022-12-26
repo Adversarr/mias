@@ -166,7 +166,27 @@ void GenerateCOE(std::string path, const std::vector<uint32_t> &data,
   out.close();
 }
 
-void GenerateOutput(std::ostream &os, uint32_t kbs) {}
+void GenerateOutput(std::ostream &os, uint32_t kbs, bool fill_zero, mias::PmemDesc& pseg, mias::DmemDesc& dseg) {
+  for (uint32_t i = 0; i < kbs * 1024; ++i) {
+    if (i < pseg.binary_instrs.size()) {
+      os << std::setw(8) << std::setfill('0') << std::hex << std::noshowbase << pseg.binary_instrs[i];
+    } else if (fill_zero) {
+      os << std::setw(8) << std::setfill('0') << std::hex << std::noshowbase << 0;
+    } else {
+      break;
+    }
+  }
+
+  for (uint32_t i = 0; i < kbs * 1024; ++i) {
+    if (i < dseg.dmem_value.size()) {
+      os << std::setw(8) << std::setfill('0') << std::hex << std::noshowbase << dseg.dmem_value[i];
+    } else if (fill_zero) {
+      os << std::setw(8) << std::setfill('0') << std::hex << std::noshowbase << 0;
+    } else {
+      break;
+    }
+  }
+}
 
 int main(int argc, char *argv[]) {
   cxxopts::Options opts("mias", "MInisys ASsembler");
@@ -225,24 +245,16 @@ int main(int argc, char *argv[]) {
     i += 4;
   }
   bool fill_zero = option["f"].as<bool>();
-  for (uint32_t i = 0; i < kbs * 1024; ++i) {
-    if (i < pseg.binary_instrs.size()) {
-      std::cout << std::setw(8) << std::setfill('0') << std::hex << std::noshowbase << pseg.binary_instrs[i];
-    } else if (fill_zero) {
-      std::cout << std::setw(8) << std::setfill('0') << std::hex << std::noshowbase << 0;
-    } else {
-      break;
+  auto outfile_path = option["o"].as<std::string>();
+  if (outfile_path == "1") {
+    GenerateOutput(std::cout, kbs, fill_zero, pseg, dseg);
+  } else {
+    auto ofile = std::ofstream(outfile_path);
+    if (!ofile.is_open()) {
+      spdlog::error("Cannot open output file {}", outfile_path);
+      throw std::runtime_error("Cannot Open File Error");
     }
-  }
-
-  for (uint32_t i = 0; i < kbs * 1024; ++i) {
-    if (i < dseg.dmem_value.size()) {
-      std::cout << std::setw(8) << std::setfill('0') << std::hex << std::noshowbase << dseg.dmem_value[i];
-    } else if (fill_zero) {
-      std::cout << std::setw(8) << std::setfill('0') << std::hex << std::noshowbase << 0;
-    } else {
-      break;
-    }
+    GenerateOutput(ofile, kbs, fill_zero, pseg, dseg);
   }
   return 0;
 }
