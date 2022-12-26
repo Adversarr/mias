@@ -142,7 +142,8 @@ uint32_t interprete_register(std::string str) {
         return id + 16;
       }
     } else if (real[1] == 's') {
-      return real[2] == '8' ? real[2] - '0' + 16 : 30;
+      spdlog::warn("Got {}, return {}", real, real[2] != '8' ? (real[2] - '0' + 16) : 30);
+      return real[2] != '8' ? (real[2] - '0' + 16) : 30;
     } else if (real == "$k0") {
       return 26;
     } else if (real == "$k1") {
@@ -174,7 +175,7 @@ std::variant<std::string, uint32_t> interprete_offset(std::string off) {
     spdlog::error("Expect: alpha or digit, got {}", off);
     throw std::runtime_error("Interprete Offset Error.");
   }
-  return 0;
+  return {(uint32_t)0};
 }
 
 std::pair<std::variant<std::string, uint32_t>, uint32_t>

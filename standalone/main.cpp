@@ -13,6 +13,18 @@
 //  2. no comment messages
 //  3. seperate : with definition.
 
+std::string remove_ws(const std::string &s) {
+  int start = mias::find_first_nws(s);
+  int end = s.length() - 1;
+  while (end > start) {
+    if (!std::isspace(s[end])) {
+      break;
+    }
+    end -= 1;
+  }
+  return s.substr(start, end - start + 1);
+}
+
 struct ASMDesc {
   std::vector<std::string> data;
   std::vector<std::string> text;
@@ -51,7 +63,6 @@ void RunInput(std::istream &input) {
       }
       clear = clear.substr(0, i + 1);
       if (!clear.empty()) {
-        spdlog::info("Got '{}'", clear);
         input_str.push_back(clear);
       }
     }
@@ -71,6 +82,54 @@ void RunInput(std::istream &input) {
       desc.text.push_back(line);
     } else {
       spdlog::warn("Instr Without Segment Flag: {}, ignored.", line);
+    }
+  }
+
+  for (int i = 0; i < desc.data.size(); ++i) {
+    auto it = desc.data.begin() + i;
+    auto comma = it->find(':');
+    *it = remove_ws(*it);
+    spdlog::debug("Processing '{}'", *it);
+    if (comma != std::string::npos) {
+      // on the left, is alpha, digit, space.
+      auto l = it->substr(0, comma);
+      if (std::all_of(l.begin(), l.end(), [](char c) {
+            return std::isalpha(c) || std::isdigit(c) || std::isspace(c);
+          })) {
+        // yes
+        auto lc = remove_ws(it->substr(0, comma + 1));
+        auto rc = remove_ws(it->substr(comma + 1));
+        spdlog::debug("Found ':' in '{}', at {}, lc = '{}', rc = '{}'", *it, comma,
+                      lc, rc);
+        if (!rc.empty()) {
+          *it = rc;
+          desc.data.insert(it, lc);
+        }
+      }
+    }
+  }
+
+  for (int i = 0; i < desc.text.size(); ++i) {
+    auto it = desc.text.begin() + i;
+    auto comma = it->find(':');
+    *it = remove_ws(*it);
+    spdlog::debug("Processing '{}'", *it);
+    if (comma != std::string::npos) {
+      // on the left, is alpha, digit, space.
+      auto l = it->substr(0, comma);
+      if (std::all_of(l.begin(), l.end(), [](char c) {
+            return std::isalpha(c) || std::isdigit(c) || std::isspace(c);
+          })) {
+        // yes
+        auto lc = remove_ws(it->substr(0, comma + 1));
+        auto rc = remove_ws(it->substr(comma + 1));
+        spdlog::debug("Found ':' in '{}', at {}, lc = '{}', rc = '{}'", *it, comma,
+                      lc, rc);
+        if (!rc.empty()) {
+          *it = rc;
+          desc.text.insert(it, lc);
+        }
+      }
     }
   }
 }
