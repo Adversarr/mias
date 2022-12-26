@@ -99,8 +99,8 @@ void RunInput(std::istream &input) {
         // yes
         auto lc = remove_ws(it->substr(0, comma + 1));
         auto rc = remove_ws(it->substr(comma + 1));
-        spdlog::debug("Found ':' in '{}', at {}, lc = '{}', rc = '{}'", *it, comma,
-                      lc, rc);
+        spdlog::debug("Found ':' in '{}', at {}, lc = '{}', rc = '{}'", *it,
+                      comma, lc, rc);
         if (!rc.empty()) {
           *it = rc;
           desc.data.insert(it, lc);
@@ -123,8 +123,8 @@ void RunInput(std::istream &input) {
         // yes
         auto lc = remove_ws(it->substr(0, comma + 1));
         auto rc = remove_ws(it->substr(comma + 1));
-        spdlog::debug("Found ':' in '{}', at {}, lc = '{}', rc = '{}'", *it, comma,
-                      lc, rc);
+        spdlog::debug("Found ':' in '{}', at {}, lc = '{}', rc = '{}'", *it,
+                      comma, lc, rc);
         if (!rc.empty()) {
           *it = rc;
           desc.text.insert(it, lc);
@@ -175,12 +175,19 @@ int main(int argc, char *argv[]) {
   opts.add_options()("o", "Output Asm File, 1 for stdout.",
                      cxxopts::value<std::string>()->default_value("1"));
   opts.add_options()("m", "memory size, in KB",
-                     cxxopts::value<uint32_t>()->default_value("0"));
+                     cxxopts::value<uint32_t>()->default_value("64"));
   opts.add_options()("c,coe", "generate coe output as well.");
+  opts.add_options()("v,verbose", "Verbose mode");
+  opts.add_options()("f,fill", "Fill zero.");
   auto option = opts.parse(argc, argv);
   auto default_logger = spdlog::stderr_color_st("el");
   spdlog::set_default_logger(default_logger);
-  spdlog::set_level(spdlog::level::debug);
+  if (option["v"].as<bool>()) {
+    spdlog::set_level(spdlog::level::debug);
+    spdlog::info("Verbose Mode");
+  } else {
+    spdlog::set_level(spdlog::level::warn);
+  }
   if (option["i"].as<std::string>() == "0") {
     RunInput(std::cin);
   } else {
@@ -199,9 +206,9 @@ int main(int argc, char *argv[]) {
   pp.SetDmemDesc(dseg);
   pp.Parse(desc.text);
   auto pseg = pp.Describe();
+       auto kbs = option["m"].as<uint32_t>();
   if (option["coe"].as<bool>()) {
     // Generate COE
-    auto kbs = option["m"].as<uint32_t>();
     GenerateCOE("prgmem.coe", pseg.binary_instrs, kbs);
     GenerateCOE("dmem.coe", dseg.dmem_value, kbs);
   }
@@ -216,6 +223,26 @@ int main(int argc, char *argv[]) {
   for (uint32_t instr : dseg.dmem_value) {
     spdlog::info("Dmem[{:#010x}] = {:#010x}", i, instr);
     i += 4;
+  }
+  bool fill_zero = option["f"].as<bool>();
+  for (uint32_t i = 0; i < kbs * 1024; ++i) {
+    if (i < pseg.binary_instrs.size()) {
+      std::cout << std::setw(8) << std::setfill('0') << std::hex << std::noshowbase << pseg.binary_instrs[i];
+    } else if (fill_zero) {
+      std::cout << std::setw(8) << std::setfill('0') << std::hex << std::noshowbase << 0;
+    } else {
+      break;
+    }
+  }
+
+  for (uint32_t i = 0; i < kbs * 1024; ++i) {
+    if (i < dseg.dmem_value.size()) {
+      std::cout << std::setw(8) << std::setfill('0') << std::hex << std::noshowbase << dseg.dmem_value[i];
+    } else if (fill_zero) {
+      std::cout << std::setw(8) << std::setfill('0') << std::hex << std::noshowbase << 0;
+    } else {
+      break;
+    }
   }
   return 0;
 }
