@@ -13,6 +13,16 @@
 //  2. no comment messages
 //  3. seperate : with definition.
 
+inline bool start_with(std::string_view s1, std::string_view pat) {
+  if (s1.length() < pat.length()) {
+    return false;
+  } else if (s1.substr(0, pat.length()) == pat) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 std::string remove_ws(const std::string &s) {
   int start = mias::find_first_nws(s);
   int end = s.length() - 1;
@@ -70,10 +80,10 @@ void RunInput(std::istream &input) {
   bool is_data_seg = false;
   bool is_text_seg = false;
   for (auto line : input_str) {
-    if (mias::strtolower(line) == ".data") {
+    if (start_with(mias::strtolower(line), ".data")) {
       is_data_seg = true;
       is_text_seg = false;
-    } else if (mias::strtolower(line) == ".text") {
+    } else if (start_with(mias::strtolower(line), ".text")) {
       is_text_seg = true;
       is_data_seg = false;
     } else if (is_data_seg) {
@@ -94,7 +104,8 @@ void RunInput(std::istream &input) {
       // on the left, is alpha, digit, space.
       auto l = it->substr(0, comma);
       if (std::all_of(l.begin(), l.end(), [](char c) {
-            return std::isalpha(c) || std::isdigit(c) || std::isspace(c) || c == '_';
+            return std::isalpha(c) || std::isdigit(c) || std::isspace(c) ||
+                   c == '_';
           })) {
         // yes
         auto lc = remove_ws(it->substr(0, comma + 1));
@@ -118,7 +129,8 @@ void RunInput(std::istream &input) {
       // on the left, is alpha, digit, space.
       auto l = it->substr(0, comma);
       if (std::all_of(l.begin(), l.end(), [](char c) {
-            return std::isalpha(c) || std::isdigit(c) || std::isspace(c) || c == '_';
+            return std::isalpha(c) || std::isdigit(c) || std::isspace(c) ||
+                   c == '_';
           })) {
         // yes
         auto lc = remove_ws(it->substr(0, comma + 1));
