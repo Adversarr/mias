@@ -89,12 +89,12 @@ void RunInput(std::istream &input) {
     auto it = desc.data.begin() + i;
     auto comma = it->find(':');
     *it = remove_ws(*it);
-    spdlog::debug("Processing '{}'", *it);
+    spdlog::debug("Processing '{}', comma={}", *it, comma);
     if (comma != std::string::npos) {
       // on the left, is alpha, digit, space.
       auto l = it->substr(0, comma);
       if (std::all_of(l.begin(), l.end(), [](char c) {
-            return std::isalpha(c) || std::isdigit(c) || std::isspace(c);
+            return std::isalpha(c) || std::isdigit(c) || std::isspace(c) || c == '_';
           })) {
         // yes
         auto lc = remove_ws(it->substr(0, comma + 1));
@@ -118,7 +118,7 @@ void RunInput(std::istream &input) {
       // on the left, is alpha, digit, space.
       auto l = it->substr(0, comma);
       if (std::all_of(l.begin(), l.end(), [](char c) {
-            return std::isalpha(c) || std::isdigit(c) || std::isspace(c);
+            return std::isalpha(c) || std::isdigit(c) || std::isspace(c) || c == '_';
           })) {
         // yes
         auto lc = remove_ws(it->substr(0, comma + 1));
@@ -166,22 +166,40 @@ void GenerateCOE(std::string path, const std::vector<uint32_t> &data,
   out.close();
 }
 
-void GenerateOutput(std::ostream &os, uint32_t kbs, bool fill_zero, mias::PmemDesc& pseg, mias::DmemDesc& dseg) {
-  for (uint32_t i = 0; i < kbs * 1024; ++i) {
+void GenerateOutput(std::ostream &os, uint32_t kbs, bool fill_zero,
+                    mias::PmemDesc &pseg, mias::DmemDesc &dseg) {
+  std::string magic_number = "03020000";
+  if (kbs == 4) {
+    magic_number = "022000";
+  } else if (kbs == 8) {
+    magic_number = "024000";
+  } else if (kbs == 16) {
+    magic_number = "028000";
+  } else if (kbs == 32) {
+    magic_number = "020000";
+  } else if (kbs == 128) {
+    magic_number = "03040000";
+  }
+  os << magic_number;
+  for (uint32_t i = 0; i < kbs * 256; ++i) {
     if (i < pseg.binary_instrs.size()) {
-      os << std::setw(8) << std::setfill('0') << std::hex << std::noshowbase << pseg.binary_instrs[i];
+      os << std::setw(8) << std::setfill('0') << std::hex << std::noshowbase
+         << pseg.binary_instrs[i];
     } else if (fill_zero) {
-      os << std::setw(8) << std::setfill('0') << std::hex << std::noshowbase << 0;
+      os << std::setw(8) << std::setfill('0') << std::hex << std::noshowbase
+         << 0;
     } else {
       break;
     }
   }
 
-  for (uint32_t i = 0; i < kbs * 1024; ++i) {
+  for (uint32_t i = 0; i < kbs * 256; ++i) {
     if (i < dseg.dmem_value.size()) {
-      os << std::setw(8) << std::setfill('0') << std::hex << std::noshowbase << dseg.dmem_value[i];
+      os << std::setw(8) << std::setfill('0') << std::hex << std::noshowbase
+         << dseg.dmem_value[i];
     } else if (fill_zero) {
-      os << std::setw(8) << std::setfill('0') << std::hex << std::noshowbase << 0;
+      os << std::setw(8) << std::setfill('0') << std::hex << std::noshowbase
+         << 0;
     } else {
       break;
     }
@@ -226,7 +244,7 @@ int main(int argc, char *argv[]) {
   pp.SetDmemDesc(dseg);
   pp.Parse(desc.text);
   auto pseg = pp.Describe();
-       auto kbs = option["m"].as<uint32_t>();
+  auto kbs = option["m"].as<uint32_t>();
   if (option["coe"].as<bool>()) {
     // Generate COE
     GenerateCOE("prgmem.coe", pseg.binary_instrs, kbs);

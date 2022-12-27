@@ -581,13 +581,13 @@ InstrDesc from_string(std::string str) {
     auto param = split(remaining, ',');
     auto rt = interprete_register(param[0]);
     auto rs = interprete_register(param[1]);
-    auto imm = interprete_immediate(param[1]);
+    auto imm = interprete_immediate(param[2]);
     return InstrDesc::Slti(rs, rt, imm);
   } else if (instr_name == "sltiu") {
     auto param = split(remaining, ',');
     auto rt = interprete_register(param[0]);
+    auto imm = interprete_immediate(param[2]);
     auto rs = interprete_register(param[1]);
-    auto imm = interprete_immediate(param[1]);
     return InstrDesc::Sltiu(rs, rt, imm);
   } else if (instr_name == "j") {
     auto imm = interprete_offset(remaining);
