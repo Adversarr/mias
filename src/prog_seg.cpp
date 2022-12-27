@@ -134,16 +134,6 @@ uint32_t interprete_register(std::string str) {
       return 2;
     } else if (real == "$v1") {
       return 3;
-    } else if (real[1] == 't') {
-      auto id = real[2] - '0';
-      if (id < 8) {
-        return id + 8;
-      } else {
-        return id + 16;
-      }
-    } else if (real[1] == 's') {
-      spdlog::warn("Got {}, return {}", real, real[2] != '8' ? (real[2] - '0' + 16) : 30);
-      return real[2] != '8' ? (real[2] - '0' + 16) : 30;
     } else if (real == "$k0") {
       return 26;
     } else if (real == "$k1") {
@@ -158,6 +148,16 @@ uint32_t interprete_register(std::string str) {
       return 31;
     } else if (std::isdigit(real[1])) {
       retval = mias::atoi(real.substr(1));
+    } else if (real[1] == 't') {
+      auto id = real[2] - '0';
+      if (id < 8) {
+        return id + 8;
+      } else {
+        return id + 16;
+      }
+    } else if (real[1] == 's') {
+      spdlog::warn("Got {}, return {}", real, real[2] != '8' ? (real[2] - '0' + 16) : 30);
+      return real[2] != '8' ? (real[2] - '0' + 16) : 30;
     } else {
       spdlog::info("Except Register Name, got {}", real);
       throw std::runtime_error("Prog Seg Error");
