@@ -134,6 +134,8 @@ uint32_t interprete_register(std::string str) {
       return 2;
     } else if (real == "$v1") {
       return 3;
+    } else if (real[1] =='a') {
+      return real[2] - '0' + 4;
     } else if (real[1] == 't') {
       auto id = real[2] - '0';
       if (id < 8) {
